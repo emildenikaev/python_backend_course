@@ -1,0 +1,32 @@
+# Системные файлы
+.DS_Store
+Thumbs.db
+
+# Файлы виртуального окружения
+venv/
+env/
+ENV/
+.env
+.venv/
+
+# Пакеты Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Логи
+*.log
+
+# Конфигурации IDE
+.idea/
+.vscode/
+
+# Другое
+*.sqlite3
+*.db
+
+# Файлы и каталоги, специфичные для CI/CD
+*.egg-info/
+dist/
+build/
