@@ -41,11 +41,13 @@ async def app(scope, receive, send) -> None:
         elif method == 'GET' and path.startswith('/fibonacci/'):
             # Извлекаем n из пути
             n_param = path[len('/fibonacci/'):]
-            if not n_param.isdigit() or not n_param:
+            
+            # Проверяем, является ли n целым числом (включая негативные)
+            try:
+                n = int(n_param)
+            except ValueError:
                 await send_response(send, 422, {"error": "'n' must be a non-negative integer"})
                 return
-
-            n = int(n_param)
 
             # Обработка негативного числа
             if n < 0:
@@ -60,8 +62,12 @@ async def app(scope, receive, send) -> None:
         # Обработчик для GET /mean
         elif method == 'GET' and path == '/mean':
             # Получаем тело запроса
-            body = await receive()
-            body_json = json.loads(body.get('body', ''))
+            try:
+                body = await receive()
+                body_json = json.loads(body.get('body', ''))
+            except json.JSONDecodeError:
+                await send_response(send, 422, {"error": "Invalid JSON"})
+                return
 
             # Проверка на пустой массив
             if not body_json or not isinstance(body_json, list):
